@@ -1,11 +1,16 @@
-import { Button } from "@mui/material";
+import React from 'react';
+// routing
+//import Routes from '../src/routes';
+//import Home from './views/pages/home/Home'
+import Routes from '../src/views/pages/home/modules/routes'
 
 
-export default function App() {
-  return (
-    <div>
-      <h1>App</h1>
-      <Button variant="contained">Boton sexy</Button>
-    </div>
-  )
-}
+const App = () => {
+    return (
+        <>
+        <Routes/>
+        </>
+    );
+};
+
+export default App;

@@ -1,18 +1,28 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux';
+
+// third party
+import { BrowserRouter } from 'react-router-dom';
+//import { Provider } from 'react-redux';
+
+// project imports
+//import * as serviceWorker from '../src/serviceWorker';
 import App from './App'
+import { store } from './app/store';
+//import { store } from '../src/store';
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+// style + assets
+//import config from './config';
 
-import './index.css'
-import { CssBaseline } from '@mui/material';
+// ==============================|| REACT DOM RENDER  ||============================== //
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <CssBaseline />
-    <App />
-  </React.StrictMode>,
+    <React.StrictMode>
+        <Provider store={store}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </Provider>
+    </React.StrictMode>
 )
