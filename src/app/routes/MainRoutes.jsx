@@ -7,7 +7,7 @@ import GendersList from '../models/catalogs/GendersList';
 
 
 //import Login from '../views/pages/authentication/authentication/Login';
-import Home from '../views/pages/home/Home';
+import Home from '../../views/pages/home/Home';
 
 // ==============================|| MAIN ROUTING ||============================== //
 // ==============================|| RUTA PRINCIPAL ||============================== //
