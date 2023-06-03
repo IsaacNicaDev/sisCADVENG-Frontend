@@ -1,40 +1,72 @@
-import axios from "axios";
-const API_URL = 'http://localhost:8000';
+import axios from 'axios';
 
-export default class GendersService{
+const API_URL = 'http://localhost:8000/api/';
+const genderUrl = API_URL + 'catalogs/genders/';
 
-    constructor(){}
 
-    //CRUD
+/*//Get genders
+export const getGenders = () => {
+    return axios.get(genderUrl);
+};*/
+//Get genders
+export const getGenders = async () => {
+    const response = await axios.get(genderUrl);
+    return response.data;
+};
 
-    getGenders() {
-        const url = `${API_URL}/api/catalogs/genders/`;
-        return axios.get(url).then(response => response.data);
-    }
 
-    getGendersByURL(link){
-        const url = `${API_URL}${link}`;
-        return axios.get(url).then(response => response.data);
-    }
+//Get gender by id
+export const getGenderById = (id) => {
+    return axios.get(`${genderUrl}${id}/`);
+};
 
-    getGender(pk){
-        const url = `${API_URL}/api/catalogs/genders/${pk}`;
-        return axios.get(url).then(response => response.data)
-    }
+//Create gender
+export const createGender = (data) => {
+    return axios.post(genderUrl, data);
+};
 
-    deleteGender(gender){
-        const url = `${API_URL}/api/catalogs/genders/${gender.pk}`;
-        return axios.delete(url);
-    }
+//update gender
+export const updateGender = (id, data) => {
+    return axios.put(`${genderUrl}${id}/`, data);
+};
 
-    createGender(gender){
-        const url = `${API_URL}/api/catalogs/genders/`;
-        return axios.post(url, gender);
-    }
+//delete gender
+export const deleteGender = (id) => {
+    return axios.delete(`${genderUrl}${id}/`);
+};
 
-    updateGender(gender){
-        const url = `${API_URL}/api/catalogs/genders/${gender.pk}`;
-        return axios.put(url, gender);
-    }
-    
+
+//CRUD
+
+/* getGenders() {
+     const url = `${API_URL}/api/catalogs/genders/`;
+     return axios.get(url).then(response => response.data);
+ }
+
+getGendersByURL(link) {
+    const url = `${API_URL}${link}`;
+    return axios.get(url).then(response => response.data);
 }
+
+getGender(pk) {
+    const url = `${API_URL}/api/catalogs/genders/${pk}`;
+    return axios.get(url).then(response => response.data)
+}
+
+deleteGender(gender) {
+    const url = `${API_URL}/api/catalogs/genders/${gender.pk}`;
+    return axios.delete(url);
+}
+
+createGender(gender) {
+    const url = `${API_URL}/api/catalogs/genders/`;
+    return axios.post(url, gender);
+}
+
+updateGender(gender) {
+    const url = `${API_URL}/api/catalogs/genders/${gender.pk}`;
+    return axios.put(url, gender);
+}
+*/
+
+
