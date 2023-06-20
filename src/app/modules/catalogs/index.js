@@ -9,5 +9,7 @@ export { default as ModalityList } from './modality/ModalityList';
 export * from './modality/services/ModalityService';
 export { default as MunicipalityList } from './municipality/MunicipalityList';
 export * from './municipality/services/MunicipalityService';
+export { default as SectionList } from './section/SectionList';
+export * from './section/services/SectionService';
 export { default as SubjectList } from './subject/SubjectList';
 export * from './subject/services/SubjectService';
