@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_URL = 'http://localhost:8000/api/';
+import { API_URL } from '../../../../../infrastructure';
 const genderUrl = API_URL + 'catalogs/genders/';
 
 

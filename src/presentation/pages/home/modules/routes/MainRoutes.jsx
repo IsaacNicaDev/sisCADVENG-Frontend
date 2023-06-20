@@ -12,7 +12,7 @@ import SignUp from '../views/SignUp';
 import Home from '../../Home';
 import Dashboard from '../../../../dashboard/Dashboard';
 import GenderList from '../../../../../app/modules/catalogs/gender/GenderList';
-
+import { GradeList } from '../../../../../app/modules/catalogs';
 // ======|| MAIN ROUTING ||====== //
 
 const MainRoutes = {
@@ -20,7 +20,7 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <GenderList />,
+            element: <GradeList />,
         },
         {
             path: 'sign-in/',

@@ -5,15 +5,16 @@ import { Box } from "@mui/system";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getGenders, deleteGender, createGender, updateGender } from "./services/GenderService";
+
+import { getGrades, deleteGrade, createGrade, updateGrade } from "./services/GradeService";
 import { StyledBodyModal } from "../Styles";
 
-const GendersList = () => {
+const GradeList = () => {
     const [Data, setData] = useState([]);
     const [modalAdd, setModalAdd] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
-    const [addGender, setAddGender] = useState({
+    const [addGrade, setAddGrade] = useState({
         id: "",
         name: ""
     })
@@ -23,20 +24,20 @@ const GendersList = () => {
 
     const handledChange = e => {
         const { name, value } = e.target;
-        setAddGender(prevState => ({
+        setAddGrade(prevState => ({
             ...prevState,
             [name]: value.toUpperCase()
         }));
-        console.log(addGender);
+        console.log(addGrade);
     }
 
     const Genders = async () => {
-        const data = await getGenders();
+        const data = await getGrades();
         setData(data);
     }
 
     const genderCreate = async () => {
-        createGender(addGender).then(response => {
+        createGrade(addGrade).then(response => {
             setData(Data.concat(response.data));
             console.log(response.data);
             handledModalCreate();
@@ -46,11 +47,11 @@ const GendersList = () => {
     }
 
     const genderUpdate = async () => {
-        updateGender(addGender.id, addGender).then(response => {
+        updateGrade(addGrade.id, addGrade).then(response => {
             var newData = Data;
             newData.map(gender => {
-                if (gender.id === addGender.id) {
-                    gender.name = addGender.name;
+                if (gender.id === addGrade.id) {
+                    gender.name = addGrade.name;
                 }
             });
             setData(newData);
@@ -61,8 +62,8 @@ const GendersList = () => {
     }
 
     const genderDelete = async () => {
-        deleteGender(addGender.id).then(() => {
-            setData(Data.filter(gender => gender.id !== addGender.id));
+        deleteGrade(addGrade.id).then(() => {
+            setData(Data.filter(gender => gender.id !== addGrade.id));
             handledModalDelete();
         }).catch(err => {
             console.log(err);
@@ -70,7 +71,7 @@ const GendersList = () => {
     }
 
     const GenderOption = (gender, op) => {
-        setAddGender(gender);
+        setAddGrade(gender);
         (op === "Edit") ? handledModalUpdate()
             :
             handledModalDelete()
@@ -106,8 +107,8 @@ const GendersList = () => {
 
     const bodyAddGender = (
         <StyledBodyModal>
-            <h3>Agregar Género</h3>
-            <TextField label='Género' name="name" onChange={handledChange} />
+            <h3>Agregar Grado</h3>
+            <TextField label='Grado' name="name" onChange={handledChange} />
             <br />
             <Box align='center' >
                 <Button color='primary' onClick={() => genderCreate()} >Insertar</Button>
@@ -116,10 +117,10 @@ const GendersList = () => {
         </StyledBodyModal>
     )
 
-    const bodyUpdateGender = (
+    const bodyUpdateGrade = (
         <StyledBodyModal>
-            <h3>Editar Género</h3>
-            <TextField label='Género' name="name" onChange={handledChange} value={addGender && addGender.name} />
+            <h3>Editar Grado</h3>
+            <TextField label='Grado' name="name" onChange={handledChange} value={addGrade && addGrade.name} />
             <br />
             <Box align='center' >
                 <Button onClick={() => genderUpdate()} >Editar</Button>
@@ -128,9 +129,9 @@ const GendersList = () => {
         </StyledBodyModal>
     )
 
-    const bodyDeleteGender = (
+    const bodyDeleteGrade = (
         <StyledBodyModal>
-            <p>Estás seguro que deseas eliminar el Género <b>{addGender && addGender.name}</b>?</p>
+            <p>Estás seguro que deseas eliminar el Grado <b>{addGrade && addGrade.name}</b>?</p>
             <div align="right">
                 <Button color="secondary" onClick={() => genderDelete()}>Sí</Button>
                 <Button onClick={() => handledModalDelete()} >No</Button>
@@ -140,15 +141,15 @@ const GendersList = () => {
 
     return (
         <Box sx={{ margin: 5 }}>
-            <Typography align="center" variant="h4" padding={1}> Género</Typography>
-            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Género</Button>
+            <Typography align="center" variant="h4" padding={1}> Grado</Typography>
+            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Grado</Button>
             <br /><br />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead sx={{ backgroundColor: "ButtonFace" }} >
                         <TableRow >
                             <TableCell style={{ fontWeight: 'bold' }} align="center">ID</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Sexo</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="center">Grado</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }} align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
@@ -164,12 +165,12 @@ const GendersList = () => {
                 <Modal
                     open={modalUpdate}
                     onClose={handledModalUpdate}>
-                    {bodyUpdateGender}
+                    {bodyUpdateGrade}
                 </Modal>
                 <Modal
                     open={modalDelete}
                     onClose={handledModalDelete}>
-                    {bodyDeleteGender}
+                    {bodyDeleteGrade}
                 </Modal>
 
             </TableContainer>
@@ -177,4 +178,4 @@ const GendersList = () => {
     )
 };
 
-export default GendersList;
+export default GradeList;
