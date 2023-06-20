@@ -1,9 +1,6 @@
 // project imports
 //import MainLayout from '../layout/MainLayout/index';
 
-//import GenderForm from '../../../../../models/catalogs/GenderForm';
-//import GenderList from '../../../../../models/catalogs/GenderList';
-//import GendersList from '../models/catalogs/GendersList';
 import SignIn from '../views/SignIn';
 import SignUp from '../views/SignUp';
 
@@ -12,7 +9,8 @@ import SignUp from '../views/SignUp';
 import Home from '../../Home';
 import Dashboard from '../../../../dashboard/Dashboard';
 import GenderList from '../../../../../app/modules/catalogs/gender/GenderList';
-import { GradeList } from '../../../../../app/modules/catalogs';
+import { GradeList, MunicipalityList, SubjectList } from '../../../../../app/modules/catalogs';
+import { Subject } from '@mui/icons-material';
 // ======|| MAIN ROUTING ||====== //
 
 const MainRoutes = {
@@ -20,7 +18,7 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <GradeList />,
+            element: <MunicipalityList />,
         },
         {
             path: 'sign-in/',

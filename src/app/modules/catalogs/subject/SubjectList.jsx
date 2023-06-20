@@ -6,38 +6,38 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { getGrades, deleteGrade, createGrade, updateGrade } from "./services/GradeService";
+import { getSubjects, deleteSubject, createSubject, updateSubject } from "./services/SubjectService";
 import { StyledBodyModal } from "../Styles";
 
-const GradeList = () => {
+const SubjectList = () => {
     const [Data, setData] = useState([]);
     const [modalAdd, setModalAdd] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
-    const [addGrade, setAddGrade] = useState({
+    const [addSubject, setAddSubject] = useState({
         id: "",
         name: ""
     })
     useEffect(() => {
-        Grades();
+        Subjects();
     }, []);
 
     const handledChange = e => {
         const { name, value } = e.target;
-        setAddGrade(prevState => ({
+        setAddSubject(prevState => ({
             ...prevState,
             [name]: value.toUpperCase()
         }));
-        console.log(addGrade);
+        console.log(addSubject);
     }
 
-    const Grades = async () => {
-        const data = await getGrades();
+    const Subjects = async () => {
+        const data = await getSubjects();
         setData(data);
     }
 
-    const gradeCreate = async () => {
-        createGrade(addGrade).then(response => {
+    const subjectCreate = async () => {
+        createSubject(addSubject).then(response => {
             setData(Data.concat(response.data));
             console.log(response.data);
             handledModalCreate();
@@ -46,12 +46,12 @@ const GradeList = () => {
         })
     }
 
-    const gradeUpdate = async () => {
-        updateGrade(addGrade.id, addGrade).then(response => {
+    const subjectUpdate = async () => {
+        updateSubject(addSubject.id, addSubject).then(response => {
             var newData = Data;
-            newData.map(grade => {
-                if (grade.id === addGrade.id) {
-                    grade.name = addGrade.name;
+            newData.map(subject => {
+                if (subject.id === addSubject.id) {
+                    subject.name = addSubject.name;
                 }
             });
             setData(newData);
@@ -61,17 +61,17 @@ const GradeList = () => {
         })
     }
 
-    const gradeDelete = async () => {
-        deleteGrade(addGrade.id).then(() => {
-            setData(Data.filter(grade => grade.id !== addGrade.id));
+    const subjectDelete = async () => {
+        deleteSubject(addSubject.id).then(() => {
+            setData(Data.filter(subject => subject.id !== addSubject.id));
             handledModalDelete();
         }).catch(err => {
             console.log(err);
         })
     }
 
-    const gradeOption = (grade, op) => {
-        setAddGrade(grade);
+    const subjectOption = (subject, op) => {
+        setAddSubject(subject);
         (op === "Edit") ? handledModalUpdate()
             :
             handledModalDelete()
@@ -86,8 +86,8 @@ const GradeList = () => {
             <TableCell align="center">{data.name}</TableCell>
             <TableCell align="center">
                 <Box component='div'>
-                    <Button size="small" sx={{ marginInlineEnd: 1 }} variant="contained" onClick={() => gradeOption(data, "Edit")} ><EditIcon />Editar</Button>
-                    <Button size="small" variant="contained" onClick={() => gradeOption(data, "Eliminar")} > <DeleteIcon />Eliminar</Button>
+                    <Button size="small" sx={{ marginInlineEnd: 1 }} variant="contained" onClick={() => subjectOption(data, "Edit")} ><EditIcon />Editar</Button>
+                    <Button size="small" variant="contained" onClick={() => subjectOption(data, "Eliminar")} > <DeleteIcon />Eliminar</Button>
                 </Box>
             </TableCell>
         </TableRow>
@@ -105,35 +105,35 @@ const GradeList = () => {
         setModalDelete(!modalDelete);
     }
 
-    const bodyAddGrade = (
+    const bodyAddSubject = (
         <StyledBodyModal>
-            <h3>Agregar Grado</h3>
-            <TextField label='Grado' name="name" onChange={handledChange} />
+            <h3>Agregar Asignatura</h3>
+            <TextField label='Asignatura' name="name" onChange={handledChange} />
             <br />
             <Box align='center' >
-                <Button color='primary' onClick={() => gradeCreate()} >Insertar</Button>
+                <Button color='primary' onClick={() => subjectCreate()} >Insertar</Button>
                 <Button onClick={() => handledModalCreate()}>Cancelar</Button>
             </Box>
         </StyledBodyModal>
     )
 
-    const bodyUpdateGrade = (
+    const bodyUpdateSubject = (
         <StyledBodyModal>
-            <h3>Editar Grado</h3>
-            <TextField label='Grado' name="name" onChange={handledChange} value={addGrade && addGrade.name} />
+            <h3>Editar Asignatura</h3>
+            <TextField label='Asignatura' name="name" onChange={handledChange} value={addSubject && addSubject.name} />
             <br />
             <Box align='center' >
-                <Button onClick={() => gradeUpdate()} >Editar</Button>
+                <Button onClick={() => subjectUpdate()} >Editar</Button>
                 <Button onClick={() => handledModalUpdate()}>Cancelar</Button>
             </Box>
         </StyledBodyModal>
     )
 
-    const bodyDeleteGrade = (
+    const bodyDeleteSubject = (
         <StyledBodyModal>
-            <p>Estás seguro que deseas eliminar el Grado <b>{addGrade && addGrade.name}</b>?</p>
+            <p>Estás seguro que deseas eliminar la Asignatura <b>{addSubject && addSubject.name}</b>?</p>
             <div align="right">
-                <Button color="secondary" onClick={() => gradeDelete()}>Sí</Button>
+                <Button color="secondary" onClick={() => subjectDelete()}>Sí</Button>
                 <Button onClick={() => handledModalDelete()} >No</Button>
             </div>
         </StyledBodyModal>
@@ -141,15 +141,15 @@ const GradeList = () => {
 
     return (
         <Box sx={{ margin: 5 }}>
-            <Typography align="center" variant="h4" padding={1}> Grado</Typography>
-            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Grado</Button>
+            <Typography align="center" variant="h4" padding={1}> Asignatura</Typography>
+            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Asignatura</Button>
             <br /><br />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead sx={{ backgroundColor: "ButtonFace" }} >
                         <TableRow >
                             <TableCell style={{ fontWeight: 'bold' }} align="center">ID</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Grado</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="center">Asignatura</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }} align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
@@ -160,17 +160,17 @@ const GradeList = () => {
                 <Modal
                     open={modalAdd}
                     onClose={handledModalCreate}>
-                    {bodyAddGrade}
+                    {bodyAddSubject}
                 </Modal>
                 <Modal
                     open={modalUpdate}
                     onClose={handledModalUpdate}>
-                    {bodyUpdateGrade}
+                    {bodyUpdateSubject}
                 </Modal>
                 <Modal
                     open={modalDelete}
                     onClose={handledModalDelete}>
-                    {bodyDeleteGrade}
+                    {bodyDeleteSubject}
                 </Modal>
 
             </TableContainer>
@@ -178,4 +178,4 @@ const GradeList = () => {
     )
 };
 
-export default GradeList;
+export default SubjectList;

@@ -6,38 +6,38 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { getGrades, deleteGrade, createGrade, updateGrade } from "./services/SubjectService";
+import { getMunicipalities, deleteMunicipality, createMunicipality, updateMunicipality } from "./services/MunicipalityService";
 import { StyledBodyModal } from "../Styles";
 
-const GradeList = () => {
+const MunicipalityList = () => {
     const [Data, setData] = useState([]);
     const [modalAdd, setModalAdd] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
-    const [addGrade, setAddGrade] = useState({
+    const [addMunicipality, setAddMunicipality] = useState({
         id: "",
         name: ""
     })
     useEffect(() => {
-        Genders();
+        Municipality();
     }, []);
 
     const handledChange = e => {
         const { name, value } = e.target;
-        setAddGrade(prevState => ({
+        setAddMunicipality(prevState => ({
             ...prevState,
             [name]: value.toUpperCase()
         }));
-        console.log(addGrade);
+        console.log(addMunicipality);
     }
 
-    const Genders = async () => {
-        const data = await getGrades();
+    const Municipality = async () => {
+        const data = await getMunicipalities();
         setData(data);
     }
 
-    const genderCreate = async () => {
-        createGrade(addGrade).then(response => {
+    const municipalityCreate = async () => {
+        createMunicipality(addMunicipality).then(response => {
             setData(Data.concat(response.data));
             console.log(response.data);
             handledModalCreate();
@@ -46,12 +46,12 @@ const GradeList = () => {
         })
     }
 
-    const genderUpdate = async () => {
-        updateGrade(addGrade.id, addGrade).then(response => {
+    const municipalityUpdate = async () => {
+        updateMunicipality(addMunicipality.id, addMunicipality).then(response => {
             var newData = Data;
-            newData.map(gender => {
-                if (gender.id === addGrade.id) {
-                    gender.name = addGrade.name;
+            newData.map(municipality => {
+                if (municipality.id === addMunicipality.id) {
+                    municipality.name = addMunicipality.name;
                 }
             });
             setData(newData);
@@ -61,17 +61,17 @@ const GradeList = () => {
         })
     }
 
-    const genderDelete = async () => {
-        deleteGrade(addGrade.id).then(() => {
-            setData(Data.filter(gender => gender.id !== addGrade.id));
+    const minicipalityDelete = async () => {
+        deleteMunicipality(addMunicipality.id).then(() => {
+            setData(Data.filter(municipality => municipality.id !== addMunicipality.id));
             handledModalDelete();
         }).catch(err => {
             console.log(err);
         })
     }
 
-    const GenderOption = (gender, op) => {
-        setAddGrade(gender);
+    const municipalityOption = (municipality, op) => {
+        setAddMunicipality(municipality);
         (op === "Edit") ? handledModalUpdate()
             :
             handledModalDelete()
@@ -86,8 +86,8 @@ const GradeList = () => {
             <TableCell align="center">{data.name}</TableCell>
             <TableCell align="center">
                 <Box component='div'>
-                    <Button size="small" sx={{ marginInlineEnd: 1 }} variant="contained" onClick={() => GenderOption(data, "Edit")} ><EditIcon />Editar</Button>
-                    <Button size="small" variant="contained" onClick={() => GenderOption(data, "Eliminar")} > <DeleteIcon />Eliminar</Button>
+                    <Button size="small" sx={{ marginInlineEnd: 1 }} variant="contained" onClick={() => municipalityOption(data, "Edit")} ><EditIcon />Editar</Button>
+                    <Button size="small" variant="contained" onClick={() => municipalityOption(data, "Eliminar")} > <DeleteIcon />Eliminar</Button>
                 </Box>
             </TableCell>
         </TableRow>
@@ -105,35 +105,35 @@ const GradeList = () => {
         setModalDelete(!modalDelete);
     }
 
-    const bodyAddGender = (
+    const bodyAddMunicipality = (
         <StyledBodyModal>
-            <h3>Agregar Grado</h3>
-            <TextField label='Grado' name="name" onChange={handledChange} />
+            <h3>Agregar Municipalidad</h3>
+            <TextField label='Municipalidad' name="name" onChange={handledChange} />
             <br />
             <Box align='center' >
-                <Button color='primary' onClick={() => genderCreate()} >Insertar</Button>
+                <Button color='primary' onClick={() => municipalityCreate()} >Insertar</Button>
                 <Button onClick={() => handledModalCreate()}>Cancelar</Button>
             </Box>
         </StyledBodyModal>
     )
 
-    const bodyUpdateGrade = (
+    const bodyUpdateMunicipality = (
         <StyledBodyModal>
-            <h3>Editar Grado</h3>
-            <TextField label='Grado' name="name" onChange={handledChange} value={addGrade && addGrade.name} />
+            <h3>Editar Municipalidad</h3>
+            <TextField label='Municipalidad' name="name" onChange={handledChange} value={addMunicipality && addMunicipality.name} />
             <br />
             <Box align='center' >
-                <Button onClick={() => genderUpdate()} >Editar</Button>
+                <Button onClick={() => municipalityUpdate()} >Editar</Button>
                 <Button onClick={() => handledModalUpdate()}>Cancelar</Button>
             </Box>
         </StyledBodyModal>
     )
 
-    const bodyDeleteGrade = (
+    const bodyDeleteMunicipality = (
         <StyledBodyModal>
-            <p>Estás seguro que deseas eliminar el Grado <b>{addGrade && addGrade.name}</b>?</p>
+            <p>Estás seguro que deseas eliminar la Municipalidad <b>{addMunicipality && addMunicipality.name}</b>?</p>
             <div align="right">
-                <Button color="secondary" onClick={() => genderDelete()}>Sí</Button>
+                <Button color="secondary" onClick={() => minicipalityDelete()}>Sí</Button>
                 <Button onClick={() => handledModalDelete()} >No</Button>
             </div>
         </StyledBodyModal>
@@ -141,15 +141,15 @@ const GradeList = () => {
 
     return (
         <Box sx={{ margin: 5 }}>
-            <Typography align="center" variant="h4" padding={1}> Grado</Typography>
-            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Grado</Button>
+            <Typography align="center" variant="h4" padding={1}> MUNICIPALIDAD</Typography>
+            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Municipalidad</Button>
             <br /><br />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead sx={{ backgroundColor: "ButtonFace" }} >
                         <TableRow >
                             <TableCell style={{ fontWeight: 'bold' }} align="center">ID</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Grado</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="center">Municipalidad</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }} align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
@@ -160,17 +160,17 @@ const GradeList = () => {
                 <Modal
                     open={modalAdd}
                     onClose={handledModalCreate}>
-                    {bodyAddGender}
+                    {bodyAddMunicipality}
                 </Modal>
                 <Modal
                     open={modalUpdate}
                     onClose={handledModalUpdate}>
-                    {bodyUpdateGrade}
+                    {bodyUpdateMunicipality}
                 </Modal>
                 <Modal
                     open={modalDelete}
                     onClose={handledModalDelete}>
-                    {bodyDeleteGrade}
+                    {bodyDeleteMunicipality}
                 </Modal>
 
             </TableContainer>
@@ -178,4 +178,4 @@ const GradeList = () => {
     )
 };
 
-export default GradeList;
+export default MunicipalityList;
