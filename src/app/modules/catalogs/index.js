@@ -1,4 +1,6 @@
 export * from './Styles';
+export { default as EducationalLevelList } from './educationalLevel/EducationalLevelList';
+export * from './educationalLevel/services/EducacionalLevelService';
 export { default as GenderList } from './gender/GenderList';
 export * from './gender/services/GenderService';
 export { default as GradeList } from './grade/GradeList';
