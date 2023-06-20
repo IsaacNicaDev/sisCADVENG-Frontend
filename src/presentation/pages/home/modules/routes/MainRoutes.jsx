@@ -8,9 +8,7 @@ import SignUp from '../views/SignUp';
 //import Login from '../views/pages/authentication/authentication/Login';
 import Home from '../../Home';
 import Dashboard from '../../../../dashboard/Dashboard';
-import GenderList from '../../../../../app/modules/catalogs/gender/GenderList';
-import { ModalityList, SectionList } from '../../../../../app/modules/catalogs';
-import { Subject } from '@mui/icons-material';
+import { ShiftList } from '../../../../../app/modules/catalogs';
 // ======|| MAIN ROUTING ||====== //
 
 const MainRoutes = {
@@ -18,7 +16,7 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <SectionList />,
+            element: <ShiftList />,
         },
         {
             path: 'sign-in/',

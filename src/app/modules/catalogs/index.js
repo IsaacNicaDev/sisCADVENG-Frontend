@@ -11,5 +11,7 @@ export { default as MunicipalityList } from './municipality/MunicipalityList';
 export * from './municipality/services/MunicipalityService';
 export { default as SectionList } from './section/SectionList';
 export * from './section/services/SectionService';
+export { default as ShiftList } from './shift/ShiftList';
+export * from './shift/services/ShiftService';
 export { default as SubjectList } from './subject/SubjectList';
 export * from './subject/services/SubjectService';
