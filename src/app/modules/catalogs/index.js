@@ -3,6 +3,8 @@ export { default as EducationalLevelList } from './educationalLevel/EducationalL
 export * from './educationalLevel/services/EducacionalLevelService';
 export { default as Educational_InstitutionList } from './educational_Institution/Educational_InstitutionList';
 export * from './educational_Institution/services/Educational_InstitutionService';
+export { default as EnrolmentTypeList } from './enrolmentType/EnrolmentTypeList';
+export * from './enrolmentType/services/EnrolmentTypeService';
 export { default as GenderList } from './gender/GenderList';
 export * from './gender/services/GenderService';
 export { default as GradeList } from './grade/GradeList';
