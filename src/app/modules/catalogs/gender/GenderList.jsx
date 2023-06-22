@@ -46,7 +46,7 @@ const GendersList = () => {
     }
 
     const genderUpdate = async () => {
-        updateGender(addGender.id, addGender).then(response => {
+        updateGender(addGender.id, addGender).then(() => {
             var newData = Data;
             newData.map(gender => {
                 if (gender.id === addGender.id) {

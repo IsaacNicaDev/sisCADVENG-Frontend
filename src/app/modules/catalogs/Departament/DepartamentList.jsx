@@ -6,38 +6,38 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { getReligions, deleteReligion, createReligion, updateReligion } from "./services/ReligionService";
+import { getDepartaments, deleteDepartament, createDepartament, updateDepartament } from "./services/DepartamentService";
 import { StyledBodyModal } from "../Styles";
 
-const ReligionList = () => {
+const DepartamentList = () => {
     const [Data, setData] = useState([]);
     const [modalAdd, setModalAdd] = useState(false);
     const [modalUpdate, setModalUpdate] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
-    const [addReligion, setAddReligion] = useState({
+    const [addDepartament, setAddDepartament] = useState({
         id: "",
         name: ""
     })
     useEffect(() => {
-        religions();
+        departaments();
     }, []);
 
     const handledChange = e => {
         const { name, value } = e.target;
-        setAddReligion(prevState => ({
+        setAddDepartament(prevState => ({
             ...prevState,
             [name]: value.toUpperCase()
         }));
-        console.log(addReligion);
+        console.log(addDepartament);
     }
 
-    const religions = async () => {
-        const data = await getReligions();
+    const departaments = async () => {
+        const data = await getDepartaments();
         setData(data);
     }
 
-    const religionCreate = async () => {
-        createReligion(addReligion).then(response => {
+    const departamentCreate = async () => {
+        createDepartament(addDepartament).then(response => {
             setData(Data.concat(response.data));
             console.log(response.data);
             handledModalCreate();
@@ -46,12 +46,12 @@ const ReligionList = () => {
         })
     }
 
-    const religionUpdate = async () => {
-        updateReligion(addReligion.id, addReligion).then(response => {
+    const departamentUpdate = async () => {
+        updateDepartament(addDepartament.id, addDepartament).then(response => {
             var newData = Data;
-            newData.map(religion => {
-                if (religion.id === addReligion.id) {
-                    religion.name = addReligion.name;
+            newData.map(departament => {
+                if (departament.id === addDepartament.id) {
+                    departament.name = addDepartament.name;
                 }
             });
             setData(newData);
@@ -61,17 +61,17 @@ const ReligionList = () => {
         })
     }
 
-    const religionDelete = async () => {
-        deleteReligion(addReligion.id).then(() => {
-            setData(Data.filter(religion => religion.id !== addReligion.id));
+    const departamentDelete = async () => {
+        deleteDepartament(addDepartament.id).then(() => {
+            setData(Data.filter(departament => departament.id !== addDepartament.id));
             handledModalDelete();
         }).catch(err => {
             console.log(err);
         })
     }
 
-    const religionOption = (religion, op) => {
-        setAddReligion(religion);
+    const departamentOption = (departament, op) => {
+        setAddDepartament(departament);
         (op === "Edit") ? handledModalUpdate()
             :
             handledModalDelete()
@@ -86,8 +86,8 @@ const ReligionList = () => {
             <TableCell align="center">{data.name}</TableCell>
             <TableCell align="center">
                 <Box component='div'>
-                    <Button size="small" sx={{ marginInlineEnd: 1 }} variant="contained" onClick={() => religionOption(data, "Edit")} ><EditIcon />Editar</Button>
-                    <Button size="small" variant="contained" onClick={() => religionOption(data, "Eliminar")} > <DeleteIcon />Eliminar</Button>
+                    <Button size="small" sx={{ marginInlineEnd: 1 }} variant="contained" onClick={() => departamentOption(data, "Edit")} ><EditIcon />Editar</Button>
+                    <Button size="small" variant="contained" onClick={() => departamentOption(data, "Eliminar")} > <DeleteIcon />Eliminar</Button>
                 </Box>
             </TableCell>
         </TableRow>
@@ -105,35 +105,35 @@ const ReligionList = () => {
         setModalDelete(!modalDelete);
     }
 
-    const bodyAddReligion = (
+    const bodyAddDepartament = (
         <StyledBodyModal>
-            <h3>Agregar Religion</h3>
-            <TextField label='Religion' name="name" onChange={handledChange} />
+            <h3>Agregar Departamento</h3>
+            <TextField label='Departamento' name="name" onChange={handledChange} />
             <br />
             <Box align='center' >
-                <Button color='primary' onClick={() => religionCreate()} >Insertar</Button>
+                <Button color='primary' onClick={() => departamentCreate()} >Insertar</Button>
                 <Button onClick={() => handledModalCreate()}>Cancelar</Button>
             </Box>
         </StyledBodyModal>
     )
 
-    const bodyUpdateReligion = (
+    const bodyUpdateDepartament = (
         <StyledBodyModal>
-            <h3>Editar Religion</h3>
-            <TextField label='Religion' name="name" onChange={handledChange} value={addReligion && addReligion.name} />
+            <h3>Editar Departamento</h3>
+            <TextField label='Departamento' name="name" onChange={handledChange} value={addDepartament && addDepartament.name} />
             <br />
             <Box align='center' >
-                <Button onClick={() => religionUpdate()} >Editar</Button>
+                <Button onClick={() => departamentUpdate()} >Editar</Button>
                 <Button onClick={() => handledModalUpdate()}>Cancelar</Button>
             </Box>
         </StyledBodyModal>
     )
 
-    const bodyDeleteReligion = (
+    const bodyDeleteDepartament = (
         <StyledBodyModal>
-            <p>Estás seguro que deseas eliminar la Religion <b>{addReligion && addReligion.name}</b>?</p>
+            <p>Estás seguro que deseas eliminar la Departamento <b>{addDepartament && addDepartament.name}</b>?</p>
             <div align="right">
-                <Button color="secondary" onClick={() => religionDelete()}>Sí</Button>
+                <Button color="secondary" onClick={() => departamentDelete()}>Sí</Button>
                 <Button onClick={() => handledModalDelete()} >No</Button>
             </div>
         </StyledBodyModal>
@@ -141,15 +141,15 @@ const ReligionList = () => {
 
     return (
         <Box sx={{ margin: 5 }}>
-            <Typography align="center" variant="h4" padding={1}> Religión</Typography>
-            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Religion</Button>
+            <Typography align="center" variant="h4" padding={1}> Departamento</Typography>
+            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Departamento</Button>
             <br /><br />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead sx={{ backgroundColor: "ButtonFace" }} >
                         <TableRow >
                             <TableCell style={{ fontWeight: 'bold' }} align="center">ID</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Religion</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="center">Departamento</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }} align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
@@ -160,17 +160,17 @@ const ReligionList = () => {
                 <Modal
                     open={modalAdd}
                     onClose={handledModalCreate}>
-                    {bodyAddReligion}
+                    {bodyAddDepartament}
                 </Modal>
                 <Modal
                     open={modalUpdate}
                     onClose={handledModalUpdate}>
-                    {bodyUpdateReligion}
+                    {bodyUpdateDepartament}
                 </Modal>
                 <Modal
                     open={modalDelete}
                     onClose={handledModalDelete}>
-                    {bodyDeleteReligion}
+                    {bodyDeleteDepartament}
                 </Modal>
 
             </TableContainer>
@@ -178,4 +178,4 @@ const ReligionList = () => {
     )
 };
 
-export default ReligionList;
+export default DepartamentList;
