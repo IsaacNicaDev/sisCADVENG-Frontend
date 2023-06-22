@@ -3,7 +3,7 @@ import { API_URL } from '../../../../../infrastructure';
 const countryUrl = API_URL + 'catalogs/countries/';
 
 //Get countries
-export const getcountries = async () => {
+export const getCountries = async () => {
     const response = await axios.get(countryUrl);
     return response.data;
 };

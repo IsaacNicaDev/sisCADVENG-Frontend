@@ -6,7 +6,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { getLanguage, deleteLanguage, createLanguage, updateLanguage } from "./services/LanguageService";
+import { getLanguages, deleteLanguage, createLanguage, updateLanguage } from "./services/LanguageService";
 import { StyledBodyModal } from "../Styles";
 
 const LanguageList = () => {
@@ -32,7 +32,7 @@ const LanguageList = () => {
     }
 
     const languages = async () => {
-        const data = await getLanguage();
+        const data = await getLanguages();
         setData(data);
     }
 

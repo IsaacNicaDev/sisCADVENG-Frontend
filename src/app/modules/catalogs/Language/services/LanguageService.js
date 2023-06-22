@@ -2,8 +2,8 @@ import axios from 'axios';
 import { API_URL } from '../../../../../infrastructure';
 const languageUrl = API_URL + 'catalogs/languages/';
 
-//Get Language
-export const getLanguage = async () => {
+//Get Languages
+export const getLanguages = async () => {
     const response = await axios.get(languageUrl);
     return response.data;
 };

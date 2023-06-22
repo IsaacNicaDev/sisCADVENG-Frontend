@@ -2,6 +2,8 @@ export { default as CityList } from './City/CityList';
 export * from './City/services/CityService';
 export { default as CountryList } from './Country/CountryList';
 export * from './Country/services/CountryService';
+export { default as DisabilityList } from './Disability/DisabilityList';
+export * from './Disability/services/DisabilityService';
 export { default as EthnicityList } from './EthniCity/EthnicityList';
 export * from './EthniCity/services/EthniCityService';
 export { default as LanguageList } from './Language/LanguageList';

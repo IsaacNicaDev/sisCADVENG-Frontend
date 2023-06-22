@@ -8,7 +8,7 @@ import SignUp from '../views/SignUp';
 //import Login from '../views/pages/authentication/authentication/Login';
 import Home from '../../Home';
 import Dashboard from '../../../../dashboard/Dashboard';
-import {  Educational_InstitutionList, ShiftList } from '../../../../../app/modules/catalogs';
+import {  CityList, CountryList, DisabilityList, Educational_InstitutionList, EnrolmentTypeList, EthnicityList, LanguageList, ShiftList } from '../../../../../app/modules/catalogs';
 // ======|| MAIN ROUTING ||====== //
 
 const MainRoutes = {
@@ -16,7 +16,7 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <Educational_InstitutionList />,
+            element: <DisabilityList />,
         },
         {
             path: 'sign-in/',
