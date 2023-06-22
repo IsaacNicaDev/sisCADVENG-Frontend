@@ -25,6 +25,8 @@ export { default as GradeList } from './grade/GradeList';
 export * from './grade/services/GradeService';
 export { default as LanguageList } from './language/LanguageList';
 export * from './language/services/LanguageService';
+export { default as MaritalStatusList } from './maritalStatus/MaritalStatusList';
+export * from './maritalStatus/services/MaritalStatusService';
 export { default as ModalityList } from './modality/ModalityList';
 export * from './modality/services/ModalityService';
 export { default as MunicipalityList } from './municipality/MunicipalityList';
