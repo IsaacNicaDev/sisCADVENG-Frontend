@@ -4,6 +4,8 @@ export { default as CountryList } from './Country/CountryList';
 export * from './Country/services/CountryService';
 export { default as DepartamentList } from './Departament/DepartamentList';
 export * from './Departament/services/DepartamentService';
+export { default as DepartamentalDelegationList } from './DepartamentalDelegation/DepartamentalDelegationList';
+export * from './DepartamentalDelegation/services/DepartamentalDelegationService';
 export { default as DisabilityList } from './Disability/DisabilityList';
 export * from './Disability/services/DisabilityService';
 export { default as EthnicityList } from './EthniCity/EthnicityList';
