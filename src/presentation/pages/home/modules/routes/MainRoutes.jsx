@@ -8,7 +8,7 @@ import SignUp from '../views/SignUp';
 //import Login from '../views/pages/authentication/authentication/Login';
 import Home from '../../Home';
 import Dashboard from '../../../../dashboard/Dashboard';
-import { ShiftList } from '../../../../../app/modules/catalogs';
+import {  Educational_InstitutionList, ShiftList } from '../../../../../app/modules/catalogs';
 // ======|| MAIN ROUTING ||====== //
 
 const MainRoutes = {
@@ -16,7 +16,7 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <ShiftList />,
+            element: <Educational_InstitutionList />,
         },
         {
             path: 'sign-in/',
