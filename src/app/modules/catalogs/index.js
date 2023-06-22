@@ -9,6 +9,8 @@ export { default as DepartamentalDelegationList } from './departamentalDelegatio
 export * from './departamentalDelegation/services/DepartamentalDelegationService';
 export { default as DisabilityList } from './disability/DisabilityList';
 export * from './disability/services/DisabilityService';
+export { default as DistrictList } from './district/DistrictList';
+export * from './district/services/DistrictService';
 export { default as EducationalLevelList } from './educationalLevel/EducationalLevelList';
 export * from './educationalLevel/services/EducacionalLevelService';
 export { default as Educational_InstitutionList } from './educational_Institution/Educational_InstitutionList';
