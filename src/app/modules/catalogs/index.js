@@ -8,6 +8,8 @@ export { default as EthnicityList } from './EthniCity/EthnicityList';
 export * from './EthniCity/services/EthniCityService';
 export { default as LanguageList } from './Language/LanguageList';
 export * from './Language/services/LanguageService';
+export { default as ReligionList } from './Religion/ReligionList';
+export * from './Religion/services/ReligionService';
 export * from './Styles';
 export { default as EducationalLevelList } from './educationalLevel/EducationalLevelList';
 export * from './educationalLevel/services/EducacionalLevelService';
