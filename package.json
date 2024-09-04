@@ -35,7 +35,6 @@
     "framer-motion": "^6.3.16",
     "material-ui-popup-state": "^4.0.1",
     "nprogress": "0.2.0",
-    "pnpm": "^8.6.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-apexcharts": "1.4.0",
@@ -55,6 +54,7 @@
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
+    "depcheck": "^1.4.7",
     "vite": "^4.1.0"
   }
 }

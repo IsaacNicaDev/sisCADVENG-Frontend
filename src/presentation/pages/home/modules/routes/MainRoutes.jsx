@@ -8,7 +8,8 @@ import SignUp from '../views/SignUp';
 //import Login from '../views/pages/authentication/authentication/Login';
 import Home from '../../Home';
 import Dashboard from '../../../../dashboard/Dashboard';
-import { ZoneList } from '../../../../../app/modules/catalogs';
+import { DistrictList, MaritalStatusList, ZoneList } from '../../../../../app/modules/catalogs';
+import {LocationList} from '../../../../../app/modules/core';
 // ======|| MAIN ROUTING ||====== //
 
 const MainRoutes = {
@@ -16,7 +17,7 @@ const MainRoutes = {
     children: [
         {
             path: '/',
-            element: <ZoneList />,
+            element: <LocationList />,
         },
         {
             path: 'sign-in/',
@@ -32,7 +33,6 @@ const MainRoutes = {
 
         },
     ]
-
 };
 
 export default MainRoutes;

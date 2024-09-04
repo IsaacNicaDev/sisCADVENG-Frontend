@@ -106,15 +106,16 @@ const GendersList = () => {
 
     const bodyAddGender = (
         <StyledBodyModal>
-            <h3>Agregar Género</h3>
-            <TextField label='Género' name="name" onChange={handledChange} />
-            <br />
-            <Box align='center' >
-                <Button color='primary' onClick={() => genderCreate()} >Insertar</Button>
-                <Button onClick={() => handledModalCreate()}>Cancelar</Button>
+            <Typography variant="h6" gutterBottom>Agregar Género</Typography>
+            <TextField label='Género' name="name" onChange={handledChange} fullWidth margin="normal" />
+            <Box mt={2} align="center">
+                <Button variant="contained" onClick={() => genderCreate()} >Insertar</Button>
+                <Button variant="contained" onClick={() => handledModalCreate()} sx={{ ml: 2 }}>
+                    Cancelar
+                </Button>
             </Box>
         </StyledBodyModal>
-    )
+    );
 
     const bodyUpdateGender = (
         <StyledBodyModal>
