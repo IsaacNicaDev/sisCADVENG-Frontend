@@ -8,7 +8,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { getProfessors, deleteProfessor, createProfessor, updateProfessor } from "./services/ProfessorService";
 import { StyledBodyModal } from "../Styles";
-import { Console } from "console";
 
 const ProfessorList = () => {
     const [Data, setData] = useState([]);
