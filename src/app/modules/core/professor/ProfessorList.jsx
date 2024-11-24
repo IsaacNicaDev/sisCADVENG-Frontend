@@ -102,7 +102,7 @@ const ProfessorList = () => {
             <TableCell align="center">{data.last_name}</TableCell>
             <TableCell align="center">{data.second_lastname}</TableCell>
             <TableCell align="center">{data.age}</TableCell>
-            <TableCell align="center">{data.marital_status_id}</TableCell>
+            <TableCell align="center">{data.marital_status_id?.name || "No especificado"}</TableCell>
             <TableCell align="center">{data.phone}</TableCell>
             <TableCell align="center">{data.number_children}</TableCell>
             <TableCell align="center">
