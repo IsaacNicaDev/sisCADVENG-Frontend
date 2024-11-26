@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { InputLabel, MenuItem, Select, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Modal, Paper, Table, TableBody, TableCell, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -128,12 +128,20 @@ const ProfessorList = () => {
 
     const bodyaddProfessor = (
         <StyledBodyModal>
-            <h3>Agregar Professor</h3>
-            <TextField label='Professor' name="name" onChange={handledChange} />
-            <br />
-            <Box align='center' >
-                <Button color='primary' onClick={() => professorCreate()} >Insertar</Button>
-                <Button onClick={() => handledModalCreate()}>Cancelar</Button>
+              <Typography variant="h6" gutterBottom>Agregar Profesor</Typography>
+            <TextField label='Primer Nombre' name="first_name" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Segundo Nombre' name="second_name" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Primer Apellido' name="last_name" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Segundo Apellido' name="second_lastname" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Edad' name="age" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Estado Civil' name="marital_status_id" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Teléfono' name="phone" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Número Hijos' name="number_children" onChange={handledChange} fullWidth margin="normal" />
+            <Box mt={2} align="center">
+                <Button variant="contained" onClick={() => professorCreate()} >Insertar</Button>
+                <Button variant="contained" onClick={() => handledModalCreate()} sx={{ ml: 2 }}>
+                    Cancelar
+                </Button>
             </Box>
         </StyledBodyModal>
     )
@@ -162,8 +170,8 @@ const ProfessorList = () => {
 
     return (
         <Box sx={{ margin: 5 }}>
-            <Typography align="center" variant="h4" padding={1}> Professor</Typography>
-            <Button variant="outlined" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Professor</Button>
+            <Typography align="center" variant="h4" padding={1}> Profesor</Typography>
+            <Button variant="contained" startIcon={<AddCircleIcon />} onClick={() => handledModalCreate()}>Agregar Profesor</Button>
             <br /><br />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -177,7 +185,7 @@ const ProfessorList = () => {
                             <TableCell style={{ fontWeight: 'bold' }} align="center">Edad</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }} align="center">Estado Civil</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }} align="center">Teléfono</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Numero Hijos</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="center">Número Hijos</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }} align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
