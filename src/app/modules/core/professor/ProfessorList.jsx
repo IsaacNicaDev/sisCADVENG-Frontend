@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { InputLabel, MenuItem, Select, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Modal, Paper, Table, TableBody, TableCell, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -25,10 +25,24 @@ const ProfessorList = () => {
         phone: "",
         number_children: ""
     })
+    const [estadosCiviles, setEstadosCiviles] = useState([]); // Para almacenar los datos
+  const [selectedEstadoCivil, setSelectedEstadoCivil] = useState(''); // Para almacenar el estado civil seleccionado
     useEffect(() => {
         Profesors();
     }, []);
-   
+    useEffect(() => {
+        const fetchEstadosCiviles = async () => {
+          try {
+            const response = await fetch('http://127.0.0.1:8000/api/catalogs/maritalstatus/'); // Cambia la URL por la de tu API
+            const data = await response.json();
+            setEstadosCiviles(data); // Asignar datos al estado
+          } catch (error) {
+            console.error('Error al obtener los estados civiles:', error);
+          }
+        };
+    
+        fetchEstadosCiviles();
+      }, []);
     const handledChange = e => {
         const { name, value } = e.target;
         setAddProfessor(prevState => ({
@@ -134,7 +148,22 @@ const ProfessorList = () => {
             <TextField label='Primer Apellido' name="last_name" onChange={handledChange} fullWidth margin="normal" />
             <TextField label='Segundo Apellido' name="second_lastname" onChange={handledChange} fullWidth margin="normal" />
             <TextField label='Edad' name="age" onChange={handledChange} fullWidth margin="normal" />
-            <TextField label='Estado Civil' name="marital_status_id" onChange={handledChange} fullWidth margin="normal" />
+            {/* <TextField label='Estado Civil' name="marital_status_id" onChange={handledChange} fullWidth margin="normal" /> */}
+            <FormControl fullWidth margin="normal">
+      <InputLabel id="estado-civil-label">Estado Civil</InputLabel>
+      <Select
+        labelId="estado-civil-label"
+        name="marital_status_id"
+        value={selectedEstadoCivil}
+        onChange={selectedEstadoCivil => setSelectedEstadoCivil(selectedEstadoCivil.target.value)}
+      >
+        {estadosCiviles.map((estado) => (
+          <MenuItem key={estado.id} value={estado.id}>
+            {estado.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
             <TextField label='Teléfono' name="phone" onChange={handledChange} fullWidth margin="normal" />
             <TextField label='Número Hijos' name="number_children" onChange={handledChange} fullWidth margin="normal" />
             <Box mt={2} align="center">
