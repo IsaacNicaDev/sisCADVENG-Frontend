@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { FormControl, InputLabel, MenuItem, Select, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Modal, Paper, Table, TableBody, TableCell, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CustomSelect from "./components/CustomSelect";
 
 import { getProfessors, deleteProfessor, createProfessor, updateProfessor } from "./services/ProfessorService";
+import { getMaritalStatus } from "../../catalogs/maritalStatus/";
 import { StyledBodyModal } from "../Styles";
+
 
 const ProfessorList = () => {
     const [Data, setData] = useState([]);
@@ -15,7 +18,7 @@ const ProfessorList = () => {
     const [modalUpdate, setModalUpdate] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
     const [addProfessor, setAddProfessor] = useState({
-        id: "",
+    
         first_name: "",
         second_name: "",
         last_name: "",
@@ -25,41 +28,39 @@ const ProfessorList = () => {
         phone: "",
         number_children: ""
     })
-    const [estadosCiviles, setEstadosCiviles] = useState([]); // Para almacenar los datos
-  const [selectedEstadoCivil, setSelectedEstadoCivil] = useState(''); // Para almacenar el estado civil seleccionado
+
+    const [DataMaritalStatus, setDataMaritalStatus] = useState([]); // Para almacenar los datos
+
     useEffect(() => {
         Profesors();
     }, []);
-    useEffect(() => {
-        const fetchEstadosCiviles = async () => {
-          try {
-            const response = await fetch('http://127.0.0.1:8000/api/catalogs/maritalstatus/'); // Cambia la URL por la de tu API
-            const data = await response.json();
-            setEstadosCiviles(data); // Asignar datos al estado
-          } catch (error) {
-            console.error('Error al obtener los estados civiles:', error);
-          }
-        };
-    
-        fetchEstadosCiviles();
-      }, []);
-    const handledChange = e => {
+
+    const handledChange = (e) => {
         const { name, value } = e.target;
-        setAddProfessor(prevState => ({
+
+        setAddProfessor((prevState) => ({
             ...prevState,
-            [name]: value.toUpperCase()
+            [name]:
+                ["age", "marital_status_id", "number_children"].includes(name) // Lista de propiedades tipo entero
+                ? (value === "" ? "" : parseInt(value, 10)) // Si el valor es vacío, mantén vacío; si no, convierte a número
+                    : value.toUpperCase(), // Aplicar toUpperCase() solo a propiedades tipo texto
         }));
-        console.log(addProfessor);
-    }
+
+        console.log("Actualizando:", name, "a", value);
+    };
+    
 
     const Profesors = async () => {
         const data = await getProfessors();
+        console.log(data)
         setData(data);
+        const dataMaritalStatus = await getMaritalStatus();
+        setDataMaritalStatus(dataMaritalStatus);
     }
-
     const professorCreate = async () => {
+        console.log("Datos enviados:", addProfessor);
         createProfessor(addProfessor).then(response => {
-            setData(Data.concat(response.data));
+            setData((prevState) => [...prevState, response.data]); // Añadir el nuevo profesor al estado
             console.log(response.data);
             handledModalCreate();
         }).catch(err => {
@@ -105,28 +106,49 @@ const ProfessorList = () => {
             handledModalDelete()
     }
 
-    const rows = Data.map((data) =>
-        <TableRow
-            key={data.id}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-        >
-            <TableCell align="center">{data.id}</TableCell>
-            <TableCell align="center">{data.first_name}</TableCell>
-            <TableCell align="center">{data.second_name}</TableCell>
-            <TableCell align="center">{data.last_name}</TableCell>
-            <TableCell align="center">{data.second_lastname}</TableCell>
-            <TableCell align="center">{data.age}</TableCell>
-            <TableCell align="center">{data.marital_status_id?.name || "No especificado"}</TableCell>
-            <TableCell align="center">{data.phone}</TableCell>
-            <TableCell align="center">{data.number_children}</TableCell>
-            <TableCell align="center">
-                <Box component='div'>
-                    <Button size="small" sx={{ marginInlineEnd: 1 }} variant="contained" onClick={() => professorOption(data, "Edit")} ><EditIcon />Editar</Button>
-                    <Button size="small" variant="contained" onClick={() => professorOption(data, "Eliminar")} > <DeleteIcon />Eliminar</Button>
-                </Box>
-            </TableCell>
-        </TableRow>
-    )
+    const headRows = () => {
+        return (
+            <TableRow >
+                <TableCell style={{ fontWeight: 'bold' }} align="center">ID</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Primer Nombre</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Segundo Nombre</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Primer Apellido</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Segundo Apellido</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Edad</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Estado Civil</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Teléfono</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Número Hijos</TableCell>
+                <TableCell style={{ fontWeight: 'bold' }} align="center">Acciones</TableCell>
+            </TableRow>
+        )
+    }
+
+    const rows = Data.map((data, index) => {
+        const maritalStatus = DataMaritalStatus.find(status => status.id === data.marital_status_id);
+        return (
+            <TableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+                <TableCell align="center">{data.id}</TableCell>
+                <TableCell align="center">{data.first_name}</TableCell>
+                <TableCell align="center">{data.second_name}</TableCell>
+                <TableCell align="center">{data.last_name}</TableCell>
+                <TableCell align="center">{data.second_lastname}</TableCell>
+                <TableCell align="center">{data.age}</TableCell>
+                <TableCell align="center">{maritalStatus ? maritalStatus.name : 'No disponible'}</TableCell>
+                <TableCell align="center">{data.phone}</TableCell>
+                <TableCell align="center">{data.number_children}</TableCell>
+                <TableCell align="center">
+                    <Box component='div'>
+                        <Button size="small" sx={{ marginInlineEnd: 1 }} variant="contained" onClick={() => professorOption(data, "Edit")} ><EditIcon />Editar</Button>
+                        <Button size="small" variant="contained" onClick={() => professorOption(data, "Eliminar")} > <DeleteIcon />Eliminar</Button>
+                    </Box>
+                </TableCell>
+            </TableRow>
+        );
+    });
+    
 
     const handledModalCreate = () => {
         setModalAdd(!modalAdd);
@@ -142,30 +164,21 @@ const ProfessorList = () => {
 
     const bodyaddProfessor = (
         <StyledBodyModal>
-              <Typography variant="h6" gutterBottom>Agregar Profesor</Typography>
+            <Typography variant="h6" gutterBottom>Agregar Profesor</Typography>
             <TextField label='Primer Nombre' name="first_name" onChange={handledChange} fullWidth margin="normal" />
             <TextField label='Segundo Nombre' name="second_name" onChange={handledChange} fullWidth margin="normal" />
             <TextField label='Primer Apellido' name="last_name" onChange={handledChange} fullWidth margin="normal" />
             <TextField label='Segundo Apellido' name="second_lastname" onChange={handledChange} fullWidth margin="normal" />
-            <TextField label='Edad' name="age" onChange={handledChange} fullWidth margin="normal" />
-            {/* <TextField label='Estado Civil' name="marital_status_id" onChange={handledChange} fullWidth margin="normal" /> */}
-            <FormControl fullWidth margin="normal">
-      <InputLabel id="estado-civil-label">Estado Civil</InputLabel>
-      <Select
-        labelId="estado-civil-label"
-        name="marital_status_id"
-        value={selectedEstadoCivil}
-        onChange={selectedEstadoCivil => setSelectedEstadoCivil(selectedEstadoCivil.target.value)}
-      >
-        {estadosCiviles.map((estado) => (
-          <MenuItem key={estado.id} value={estado.id}>
-            {estado.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+            <TextField label='Edad' name="age" type="number" onChange={handledChange} fullWidth margin="normal" />
+            <CustomSelect
+                label="Estado Civil"
+                name="marital_status_id"
+                value={addProfessor.marital_status_id}
+                options={DataMaritalStatus}
+                onChange={handledChange}
+            />
             <TextField label='Teléfono' name="phone" onChange={handledChange} fullWidth margin="normal" />
-            <TextField label='Número Hijos' name="number_children" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Número Hijos' name="number_children" type="number" onChange={handledChange} fullWidth margin="normal" />
             <Box mt={2} align="center">
                 <Button variant="contained" onClick={() => professorCreate()} >Insertar</Button>
                 <Button variant="contained" onClick={() => handledModalCreate()} sx={{ ml: 2 }}>
@@ -189,7 +202,7 @@ const ProfessorList = () => {
 
     const bodydeleteProfessor = (
         <StyledBodyModal>
-            <p>Estás seguro que deseas eliminar el Professor <b>{addProfessor && addProfessor.name}</b>?</p>
+            <p>Estás seguro que deseas eliminar el Professor <b>{addProfessor && addProfessor.first_name} {addProfessor && addProfessor.last_name}</b>?</p>
             <div align="right">
                 <Button color="secondary" onClick={() => professorDelete()}>Sí</Button>
                 <Button onClick={() => handledModalDelete()} >No</Button>
@@ -205,18 +218,7 @@ const ProfessorList = () => {
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                     <TableHead sx={{ backgroundColor: "ButtonFace" }} >
-                        <TableRow >
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">ID</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Primer Nombre</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Segundo Nombre</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Primer Apellido</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Segundo Apellido</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Edad</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Estado Civil</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Teléfono</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Número Hijos</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">Acciones</TableCell>
-                        </TableRow>
+                        {headRows()}
                     </TableHead>
                     <TableBody>
                         {rows}
