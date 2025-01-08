@@ -190,14 +190,26 @@ const ProfessorList = () => {
 
     const bodyupdateProfessor = (
         <StyledBodyModal>
-            <h3>Editar Professor</h3>
-            <TextField label='Professor' name="name" onChange={handledChange} value={addProfessor && addProfessor.name} />
-            <br />
-            <Box align='center' >
-                <Button onClick={() => profesorUpdate()} >Editar</Button>
-                <Button onClick={() => handledModalUpdate()}>Cancelar</Button>
-            </Box>
-        </StyledBodyModal>
+    <Typography variant="h6" gutterBottom>Actualizar Profesor</Typography>
+    <TextField label='Primer Nombre' name="first_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.first_name : ''}/>
+    <TextField label='Segundo Nombre' name="second_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.second_name : ''}/>
+    <TextField label='Primer Apellido' name="last_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.last_name : ''}/>
+    <TextField label='Segundo Apellido' name="second_lastname" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.second_lastname : ''}/>
+    <TextField label='Edad' name="age" type="number" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.age : ''}/>
+    <CustomSelect
+        label="Estado Civil"
+        name="marital_status_id"
+        value={addProfessor ? addProfessor.marital_status_id : ''}
+        options={DataMaritalStatus}
+        onChange={handledChange}
+    />
+    <TextField label='Teléfono' name="phone" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.phone : ''}/>
+    <TextField label='Número Hijos' name="number_children" type="number" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.number_children : ''}/>
+    <Box mt={2} align="center">
+        <Button variant="contained" onClick={() => profesorUpdate()} >Actualizar</Button>
+        <Button variant="contained" onClick={() => handledModalUpdate()} sx={{ ml: 2 }}>Cancelar</Button>
+    </Box>
+</StyledBodyModal>
     )
 
     const bodydeleteProfessor = (
