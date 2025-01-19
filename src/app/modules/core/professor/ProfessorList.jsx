@@ -30,6 +30,7 @@ const ProfessorList = () => {
     })
 
     const [DataMaritalStatus, setDataMaritalStatus] = useState([]); // Para almacenar los datos
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         Profesors();
@@ -48,6 +49,36 @@ const ProfessorList = () => {
 
         console.log("Actualizando:", name, "a", value);
     };
+
+    const validateFields = () => {
+        const newErrors = {};
+    
+        if (!addProfessor.first_name.trim()) {
+            newErrors.first_name = "El primer nombre es obligatorio.";
+        }
+        if (!addProfessor.last_name.trim()) {
+            newErrors.last_name = "El primer apellido es obligatorio.";
+        }
+        if (!addProfessor.phone.trim()) {
+            newErrors.phone = "El teléfono es obligatorio.";
+        } else if (!/^\d{8,15}$/.test(addProfessor.phone)) {
+            newErrors.phone = "El teléfono debe contener entre 8 y 15 dígitos.";
+        }
+        if (addProfessor.age === "" || addProfessor.age < 18 || addProfessor.age > 100) {
+            newErrors.age = "La edad debe estar entre 18 y 100.";
+        }
+        if (addProfessor.number_children < 0) {
+            newErrors.number_children = "El número de hijos no puede ser negativo.";
+        }
+        if (!addProfessor.marital_status_id) {
+            newErrors.marital_status_id = "El estado civil es obligatorio.";
+        }
+    
+        setErrors(newErrors);
+    
+        // Devuelve verdadero si no hay errores
+        return Object.keys(newErrors).length === 0;
+    };
     
 
     const Profesors = async () => {
@@ -58,6 +89,11 @@ const ProfessorList = () => {
         setDataMaritalStatus(dataMaritalStatus);
     }
     const professorCreate = async () => {
+        if (!validateFields()) {
+            console.log("Errores de validación:", errors);
+            return;
+        }
+
         console.log("Datos enviados:", addProfessor);
         createProfessor(addProfessor).then(response => {
             setData((prevState) => [...prevState, response.data]); // Añadir el nuevo profesor al estado
@@ -69,26 +105,23 @@ const ProfessorList = () => {
     }
 
     const profesorUpdate = async () => {
-        updateProfessor(addProfessor.id, addProfessor).then(response => {
-            var newData = Data;
-            newData.map(professor => {
-                if (professor.id === addProfessor.id) {
-                    professor.first_name = addProfessor.first_name;
-                    professor.second_name = addProfessor.second_name;
-                    professor.last_name = addProfessor.last_name;
-                    professor.second_lastname = addProfessor.second_lastname;
-                    professor.age = addProfessor.age;
-                    professor.marital_status_id = addProfessor.marital_status_id;
-                    professor.phone = addProfessor.phone;
-                    professor.number_children = addProfessor.number_children;
-                }
+        if (!validateFields()) {
+            console.log("Errores de validación:", errors);
+            return;
+        }
+    
+        updateProfessor(addProfessor.id, addProfessor)
+            .then(response => {
+                const newData = Data.map(professor =>
+                    professor.id === addProfessor.id ? { ...professor, ...addProfessor } : professor
+                );
+                setData(newData);
+                handledModalUpdate();
+            })
+            .catch(err => {
+                console.log(err);
             });
-            setData(newData);
-            handledModalUpdate();
-        }).catch(err => {
-            console.log(err);
-        })
-    }
+    };
 
     const professorDelete = async () => {
         deleteProfessor(addProfessor.id).then(() => {
@@ -165,11 +198,14 @@ const ProfessorList = () => {
     const bodyaddProfessor = (
         <StyledBodyModal>
             <Typography variant="h6" gutterBottom>Agregar Profesor</Typography>
-            <TextField label='Primer Nombre' name="first_name" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Primer Nombre' name="first_name" onChange={handledChange} fullWidth margin="normal" error={!!errors.first_name}
+                helperText={errors.first_name} />
             <TextField label='Segundo Nombre' name="second_name" onChange={handledChange} fullWidth margin="normal" />
-            <TextField label='Primer Apellido' name="last_name" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Primer Apellido' name="last_name" onChange={handledChange} fullWidth margin="normal" error={!!errors.last_name}
+                helperText={errors.last_name} />
             <TextField label='Segundo Apellido' name="second_lastname" onChange={handledChange} fullWidth margin="normal" />
-            <TextField label='Edad' name="age" type="number" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Edad' name="age" type="number" onChange={handledChange} fullWidth margin="normal" error={!!errors.age}
+                helperText={errors.age} />
             <CustomSelect
                 label="Estado Civil"
                 name="marital_status_id"
@@ -177,8 +213,10 @@ const ProfessorList = () => {
                 options={DataMaritalStatus}
                 onChange={handledChange}
             />
-            <TextField label='Teléfono' name="phone" onChange={handledChange} fullWidth margin="normal" />
-            <TextField label='Número Hijos' name="number_children" type="number" onChange={handledChange} fullWidth margin="normal" />
+            <TextField label='Teléfono' name="phone" onChange={handledChange} fullWidth margin="normal" error={!!errors.phone}
+                helperText={errors.phone}/>
+            <TextField label='Número Hijos' name="number_children" type="number" onChange={handledChange} fullWidth margin="normal" error={!!errors.number_children}
+                helperText={errors.number_children}/>
             <Box mt={2} align="center">
                 <Button variant="contained" onClick={() => professorCreate()} >Insertar</Button>
                 <Button variant="contained" onClick={() => handledModalCreate()} sx={{ ml: 2 }}>
@@ -190,26 +228,31 @@ const ProfessorList = () => {
 
     const bodyupdateProfessor = (
         <StyledBodyModal>
-    <Typography variant="h6" gutterBottom>Actualizar Profesor</Typography>
-    <TextField label='Primer Nombre' name="first_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.first_name : ''}/>
-    <TextField label='Segundo Nombre' name="second_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.second_name : ''}/>
-    <TextField label='Primer Apellido' name="last_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.last_name : ''}/>
-    <TextField label='Segundo Apellido' name="second_lastname" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.second_lastname : ''}/>
-    <TextField label='Edad' name="age" type="number" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.age : ''}/>
-    <CustomSelect
-        label="Estado Civil"
-        name="marital_status_id"
-        value={addProfessor ? addProfessor.marital_status_id : ''}
-        options={DataMaritalStatus}
-        onChange={handledChange}
-    />
-    <TextField label='Teléfono' name="phone" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.phone : ''}/>
-    <TextField label='Número Hijos' name="number_children" type="number" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.number_children : ''}/>
-    <Box mt={2} align="center">
-        <Button variant="contained" onClick={() => profesorUpdate()} >Actualizar</Button>
-        <Button variant="contained" onClick={() => handledModalUpdate()} sx={{ ml: 2 }}>Cancelar</Button>
-    </Box>
-</StyledBodyModal>
+            <Typography variant="h6" gutterBottom>Actualizar Profesor</Typography>
+            <TextField label='Primer Nombre' name="first_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.first_name : ''} error={!!errors.first_name}
+                helperText={errors.first_name} />
+            <TextField label='Segundo Nombre' name="second_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.second_name : ''} />
+            <TextField label='Primer Apellido' name="last_name" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.last_name : ''} error={!!errors.last_name}
+                helperText={errors.last_name}/>
+            <TextField label='Segundo Apellido' name="second_lastname" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.second_lastname : ''} />
+            <TextField label='Edad' name="age" type="number" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.age : ''} error={!!errors.age}
+                helperText={errors.age}/>
+            <CustomSelect
+                label="Estado Civil"
+                name="marital_status_id"
+                value={addProfessor ? addProfessor.marital_status_id : ''}
+                options={DataMaritalStatus}
+                onChange={handledChange}
+            />
+            <TextField label='Teléfono' name="phone" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.phone : ''} error={!!errors.phone}
+                helperText={errors.phone}/>
+            <TextField label='Número Hijos' name="number_children" type="number" onChange={handledChange} fullWidth margin="normal" value={addProfessor ? addProfessor.number_children : ''} error={!!errors.number_children}
+                helperText={errors.number_children} />
+            <Box mt={2} align="center">
+                <Button variant="contained" onClick={() => profesorUpdate()} >Actualizar</Button>
+                <Button variant="contained" onClick={() => handledModalUpdate()} sx={{ ml: 2 }}>Cancelar</Button>
+            </Box>
+        </StyledBodyModal>
     )
 
     const bodydeleteProfessor = (
