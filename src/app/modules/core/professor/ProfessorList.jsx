@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Modal, Paper, Table, TableBody, TableCell, Button } from "@mui/material";
 import { Box } from "@mui/system";
@@ -36,19 +36,17 @@ const ProfessorList = () => {
         Profesors();
     }, []);
 
-    const handledChange = (e) => {
+    const handledChange = useCallback((e) => {
         const { name, value } = e.target;
-
+    
         setAddProfessor((prevState) => ({
             ...prevState,
             [name]:
-                ["age", "marital_status_id", "number_children"].includes(name) // Lista de propiedades tipo entero
-                ? (value === "" ? "" : parseInt(value, 10)) // Si el valor es vacío, mantén vacío; si no, convierte a número
-                    : value.toUpperCase(), // Aplicar toUpperCase() solo a propiedades tipo texto
+                ["age", "marital_status_id", "number_children"].includes(name)
+                    ? (value === "" ? "" : parseInt(value, 10))
+                    : value.toUpperCase(),
         }));
-
-        console.log("Actualizando:", name, "a", value);
-    };
+    }, []);    
 
     const validateFields = () => {
         const newErrors = {};
@@ -156,13 +154,10 @@ const ProfessorList = () => {
         )
     }
 
-    const rows = Data.map((data, index) => {
+    const rows = useMemo(() => Data.map((data, index) => {
         const maritalStatus = DataMaritalStatus.find(status => status.id === data.marital_status_id);
         return (
-            <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
+            <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell align="center">{data.id}</TableCell>
                 <TableCell align="center">{data.first_name}</TableCell>
                 <TableCell align="center">{data.second_name}</TableCell>
@@ -180,7 +175,8 @@ const ProfessorList = () => {
                 </TableCell>
             </TableRow>
         );
-    });
+    }), [Data, DataMaritalStatus]);
+    
     
 
     const handledModalCreate = () => {
